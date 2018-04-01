@@ -1,5 +1,13 @@
 # isi3-tp-MVC
 
+Philippe Charrière :octocat: [@k33g](https://github.com/k33g)
+
+:warning: Si vous avez une question, créez une issue dans votre projet et notifiez moi avec [@k33g](https://github.com/k33g)
+
+> Le rapport est à saisir dans le ficher [RAPPORT.md](RAPPORT.md) en utilisant le [formalisme MarkDown](https://guides.github.com/features/mastering-markdown/)
+
+
+
 ## Exercice 1: MVC
 
 - Utiliser le projet `kebab-mvc` (référencer le jar `vert-x.jar` présent dans `../libs`)

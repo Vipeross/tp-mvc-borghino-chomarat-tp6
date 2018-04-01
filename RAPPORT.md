@@ -17,6 +17,9 @@
 ## Votre avis sur la version "Single Page Application"
 *Que retirez vous de son utilisation?, est-ce que c'est utile? ...*
 
+## Authentification
+
+Si vous deviez mettre en place un système d'authentification où seul l'utilisateur authentifié peut ajouter des ingrédients à son Kebab, comment procéderiez vous?
 
 
 ## Votre avis sur le TP et les exercices

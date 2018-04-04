@@ -25,4 +25,9 @@ public class Food {
         return this.kebab;
     }
 
+    public void removeIngredient(String i) {
+        System.out.println(i);
+        this.kebab.remove(Integer.parseInt(i));
+    }
+
 }

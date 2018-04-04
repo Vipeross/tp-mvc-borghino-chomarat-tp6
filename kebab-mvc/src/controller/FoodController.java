@@ -24,6 +24,11 @@ public class FoodController {
         this.context.next();
     }
 
+    public void removeIngredient() {
+        this.kebab.removeIngredient(this.context.request().getFormAttribute("id"));
+        this.context.next();
+    }
+
     public void setContext(RoutingContext context) {
         this.context = context;
     }

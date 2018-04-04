@@ -54,6 +54,11 @@ public class WebApp extends AbstractVerticle {
             this.foodController.add();
         });
 
+        router.post("/remove").handler(context -> {
+            this.foodController.setContext(context);
+            this.foodController.removeIngredient();
+        });
+
         // Redirection
 
         router.get("/hello").handler(context -> {
@@ -61,6 +66,10 @@ public class WebApp extends AbstractVerticle {
         });
 
         router.post("/ajout").handler(context -> {
+            context.response().putHeader("location", "/form_add.hbs").setStatusCode(302).end();
+        });
+
+        router.post("/remove").handler(context -> {
             context.response().putHeader("location", "/form_add.hbs").setStatusCode(302).end();
         });
 

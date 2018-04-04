@@ -1,5 +1,6 @@
 package kitchen;
 
+import controller.FoodController;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Launcher;
 import io.vertx.core.http.HttpServer;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 public class WebApp extends AbstractVerticle {
 
+    FoodController foodController;
 
     public void start() {
         TemplateEngine templateEngine = HandlebarsTemplateEngine.create();
@@ -30,6 +32,13 @@ public class WebApp extends AbstractVerticle {
             context.next();
         });
 
+        router.get("/form_add.hbs").handler(context -> {
+            if(this.foodController == null)
+                this.foodController = new FoodController(context);
+            this.foodController.setContext(context);
+            this.foodController.list();
+        });
+
         router.post("/action").handler(context -> {
             String choice = context.request().getFormAttribute("choice");
             String firstName = context.request().getFormAttribute("firstname");
@@ -40,10 +49,19 @@ public class WebApp extends AbstractVerticle {
                     .end(String.format("%s %s %s", choice, firstName, lastName));
         });
 
+        router.post("/ajout").handler(context -> {
+            this.foodController.setContext(context);
+            this.foodController.add();
+        });
+
         // Redirection
 
         router.get("/hello").handler(context -> {
             context.response().putHeader("location", "/hello.hbs").setStatusCode(302).end();
+        });
+
+        router.post("/ajout").handler(context -> {
+            context.response().putHeader("location", "/form_add.hbs").setStatusCode(302).end();
         });
 
         // ==============

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajout template</title>
+
+    <link rel="stylesheet" href="../webroot/css/bulma.css">
+</head>
+<body>
+    <h2>Liste des ingrédients chef</h2>
+    {{#each ingredients_list}}
+        <div>{{this}}</div>
+    {{/each}}
+    <form action="/ajout" method="post">
+        <select name="ingredient">
+            {{#each ingredients_dispo_list }}
+                <option value = "{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

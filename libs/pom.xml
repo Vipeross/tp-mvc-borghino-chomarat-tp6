@@ -68,6 +68,11 @@
             <classifier>shaded</classifier>
         </dependency>
 
+		<dependency>
+		  <groupId>io.vertx</groupId>
+		  <artifactId>vertx-auth-jwt</artifactId>
+		  <version>${project.version}</version>
+		</dependency>
 
     </dependencies>
 </project>

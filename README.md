@@ -66,3 +66,43 @@ resource: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel
   - vous n'utilisez plus les templates côté serveur
   - vous utilisez une application JavaScript et du HTML (Vue.js)
 
+## Exercice 3: Authentification
+
+Ajoutez l'authentification avec la technique des JSON Web Tokens (dans l'exercice 2)
+
+```
+Client application                                            API
+    --------                                              -----------
+        |                                                      |
+        |                   GET /api/employees                 |
+        |----------------------------------------------------->|
+        |                     403 Forbidden                    |
+        |<-----------------------------------------------------|
+        |                                                      |
+        |                                                      |
+        |                 POST /api/authenticate               |
+        |     { login: "john.doe", password: "password" }      |
+        |----------------------------------------------------->|
+        |                      200 Success                     |
+        |             { token: "my.personal.token" }           |
+        |<-----------------------------------------------------|
+        |                                                      |
+        |                                                      |
+        |                 GET /api/employees                   |
+        | Header { "Authorization: Token "my.personal.token" } |
+        |----------------------------------------------------->|
+        |                      200 Success                     |
+        |<-----------------------------------------------------|
+        |                                                      |
+```
+
+
+## Ressources:
+
+- https://vertx.io/
+- https://vertx.io/docs/guide-for-java-devs/
+- https://vertx.io/docs/vertx-auth-jwt/java/
+
+
+
+

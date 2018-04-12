@@ -8,89 +8,74 @@
     <link rel="stylesheet" href="css/bulma.css">
 </head>
 <body>
-    <h1 class="title has-text-centered">TP MVC</h1>
+<h1 class="title has-text-centered">TP MVC</h1>
 
-    <section class="section">
-        <div class="container" id="my-form">
+<section class="section">
+    <div class="container" id="my-form">
 
-            <div class="select">
-                <select v-model="choice">
-                    <option value="one">one</option>
-                    <option value="two">two</option>
-                    <option value="three">three</option>
-                    <option value="four">four</option>
-                </select>
-            </div>
-
-            <input class="input" v-model="firstname" placeholder="type your firstname">
-            <input class="input" v-model="lastname" placeholder="type your lastname">
-
-            <div class="control">
-                <button @click="send" class="button is-link">Send...</button>
-            </div>
-
-            <h1 class="title has-text-centered">{{message}}</h1>
-
+        <div class="select">
+            <select v-model="selectedIngredient">
+                <option v-for="ingredient in ingredients" v-bind:value="ingredient">{{ingredient}}</option>
+            </select>
         </div>
 
-    </section>
-
-    <section class="section">
-
-        <div class="container" id="my-messages">
-            <ul v-for="message in messages">
-                <li><b>Username:</b>{{message.username}} <b>Subject:</b>{{message.subject}}</li>
-            </ul>
-            <hr>
-            <div class="control">
-                <button @click="load" class="button is-link">Load...</button>
-            </div>
+        <div class="control">
+            <button style="margin-top: 10px" @click="send" class="button is-link">Ajouter</button>
         </div>
-    </section>
+        <h1 class="title has-text-centered">{{message}}</h1>
+
+        <ul>
+            <li v-for="(ingredient, index) in currentIngredients">{{ingredient}}
+                <button v-bind:value="index" class="button is-danger is-small" @click="remove(index)">X</button>
+            </li>
+        </ul>
+        <hr>
+    </div>
+</section>
 
 
 <script>
     new Vue({
         el: "#my-form",
+        created: function () {
+            var that = this
+            axios.get('/ingredients').then(function (response) {
+                that.ingredients = response.data;
+            });
+        },
         data: {
-            choice:"one",
-            firstname: "bob",
-            lastname: "morane",
-            message: "..."
+            ingredients: [],
+            selectedIngredient: [],
+            currentIngredients: [],
+            message: ""
         },
         methods: {
             send: function () {
                 var that = this
-                axios.post('/hello', {
-                    choice: this.choice,
-                    firstname: this.firstname,
-                    lastname: this.lastname
+                axios.post('/ajout', {
+                    selectedIngredient: that.selectedIngredient
                 })
-                .then(function (response) {
-                    that.message = response.data.message
+                .then(function () {
+                    axios.get('/contenuKebab').then(function (response) {
+                        that.currentIngredients = response.data;
+                    })
                 })
                 .catch(function (error) {
-                    that.message = "ouch..."
+                    that.message = "Erreur"
                 });
+            },
+            remove: function (index) {
+                var that = this
+                axios.post('/delete', {
+                    id: index
+                }).then(function () {
+                    axios.get('/contenuKebab').then(function (response) {
+                        that.currentIngredients = response.data;
+                    })
+                })
             }
         }
     })
-
-    new Vue({
-        el: "#my-messages",
-        data: {
-            messages: []
-        },
-        methods: {
-            load: function() {
-                var that = this
-                axios.get('/messages').then(function(response) {
-                    console.log(response)
-                    that.messages = response.data
-                })
-            }
-        }
-    });
 </script>
 </body>
 </html>

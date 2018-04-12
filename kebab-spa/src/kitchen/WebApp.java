@@ -12,6 +12,8 @@ import io.vertx.ext.web.handler.TemplateHandler;
 import io.vertx.ext.web.templ.HandlebarsTemplateEngine;
 import io.vertx.ext.web.templ.TemplateEngine;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class WebApp extends AbstractVerticle {
@@ -24,6 +26,8 @@ public class WebApp extends AbstractVerticle {
 
         // === routes ===
 
+        Kebab kebab = new Kebab(new ArrayList<String>());
+
 
         router.get("/hello").handler(context -> {
             context.response()
@@ -31,16 +35,25 @@ public class WebApp extends AbstractVerticle {
                     .end(new JsonObject().put("message", "hello").encodePrettily());
         });
 
-        router.get("/messages").handler(context -> {
-            System.out.println("messages");
+
+        router.get("/contenuKebab").handler(context -> {
+            JsonArray listIngredients = new JsonArray();
+            kebab.getIngredients().forEach(ingredient -> {
+                listIngredients.add(ingredient);
+            });
             context.response()
                     .putHeader("content-type", "application/json;charset=UTF-8")
-                    .end(new JsonArray()
-                            .add(new JsonObject().put("username", "Bob Morane").put("subject", "hello"))
-                            .add(new JsonObject().put("username", "John Doe").put("subject", "hi"))
-                            .add(new JsonObject().put("username", "Jane Doe").put("subject", "hey"))
-                            .encodePrettily()
-                    );
+                    .end(listIngredients.encodePrettily());
+        });
+
+        router.get("/ingredients").handler(context -> {
+            JsonArray listIngredients = new JsonArray();
+            Arrays.stream(Kebab.getIngredientsDispo()).forEach(ingredient -> {
+                listIngredients.add(ingredient);
+            });
+            context.response()
+                    .putHeader("content-type", "application/json;charset=UTF-8")
+                    .end(listIngredients.encodePrettily());
         });
 
         router.post("/hello").handler(context -> {
@@ -54,6 +67,27 @@ public class WebApp extends AbstractVerticle {
                     .putHeader("content-type", "application/json;charset=UTF-8")
                     .end(new JsonObject().put("message", "good").encodePrettily());
 
+        });
+
+        router.post("/ajout").handler(context -> {
+            String ingredient = context.getBodyAsJson().getString("selectedIngredient");
+            System.out.println(ingredient);
+
+            context.response()
+                    .putHeader("content-type", "text/plain;charset=UTF-8")
+                    .end("250 OK");
+
+            kebab.add(ingredient);
+
+        });
+
+        router.post("/delete").handler(context -> {
+            int id = context.getBodyAsJson().getInteger("id");
+            context.response()
+                    .putHeader("content-type", "text/plain;charset=UTF-8")
+                    .end("250 OK");
+
+            kebab.removeIngredient(id);
         });
 
         // ==============
